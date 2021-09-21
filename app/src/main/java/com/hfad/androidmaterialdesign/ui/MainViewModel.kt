@@ -1,4 +1,4 @@
-package com.hfad.androidmaterialdesign.ui.main
+package com.hfad.androidmaterialdesign.ui
 
 import androidx.lifecycle.ViewModel
 
