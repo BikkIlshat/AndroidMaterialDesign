@@ -2,7 +2,7 @@ package com.hfad.androidmaterialdesign
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.hfad.androidmaterialdesign.ui.main.MainFragment
+import com.hfad.androidmaterialdesign.ui.PictureOfTheDayFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
+                .replace(R.id.container, PictureOfTheDayFragment.newInstance())
                 .commitNow()
         }
     }
