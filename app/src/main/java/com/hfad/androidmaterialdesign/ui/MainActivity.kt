@@ -2,7 +2,7 @@ package com.hfad.androidmaterialdesign
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.hfad.androidmaterialdesign.ui.PictureOfTheDayFragment
+import com.hfad.androidmaterialdesign.ui.details.PictureOfTheDayFragment
 
 class MainActivity : AppCompatActivity() {
 
