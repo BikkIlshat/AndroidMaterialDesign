@@ -8,7 +8,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import com.hfad.androidmaterialdesign.BuildConfig
 import com.hfad.androidmaterialdesign.ui.rest.PODRetrofitImpl
-import com.hfad.androidmaterialdesign.ui.PictureOfTheDayData
 import com.hfad.androidmaterialdesign.ui.rest.PODServerResponseData
 
 

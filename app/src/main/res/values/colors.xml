@@ -11,4 +11,6 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="color_gray">#66000000</color>
+    <color name="steel_blue">#4682B4</color>
+    <color name="pale_violet_red">#DB7093</color>
 </resources>

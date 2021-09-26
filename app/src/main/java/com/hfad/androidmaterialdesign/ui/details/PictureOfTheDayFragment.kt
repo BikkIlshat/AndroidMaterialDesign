@@ -17,7 +17,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.hfad.androidmaterialdesign.MainActivity
 import com.hfad.androidmaterialdesign.R
 import com.hfad.androidmaterialdesign.databinding.MainFragmentBinding
-import com.hfad.androidmaterialdesign.ui.PictureOfTheDayData
 
 
 class PictureOfTheDayFragment : Fragment() {
