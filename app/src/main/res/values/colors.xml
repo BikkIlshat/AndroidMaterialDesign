@@ -13,4 +13,14 @@
     <color name="color_gray">#66000000</color>
     <color name="steel_blue">#4682B4</color>
     <color name="pale_violet_red">#DB7093</color>
+    <color name="light_sky_blue">#87CEFA</color>
+    <color name="cadet_blue">#5F9EA0</color>
+    <color name="dark_olive_green">#556B2F</color>
+    <color name="light_cyan">#E0FFFF</color>
+    <color name="orchid">#DA70D6</color>
+    <color name="dark_red">#8B0000</color>
+    <color name="dark_salmon">#E9967A</color>
+    <color name="burly_wood">#DEB887</color>
+    <color name="hot_pink">#FF69B4</color>
+
 </resources>
