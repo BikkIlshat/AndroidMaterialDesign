@@ -1,4 +1,6 @@
-package com.hfad.androidmaterialdesign.ui
+package com.hfad.androidmaterialdesign.ui.details
+
+import com.hfad.androidmaterialdesign.ui.rest.PODServerResponseData
 
 sealed class PictureOfTheDayData {
     data class Success(val serverResponseData: PODServerResponseData) : PictureOfTheDayData()

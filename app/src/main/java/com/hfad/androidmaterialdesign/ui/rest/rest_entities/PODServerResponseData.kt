@@ -1,4 +1,4 @@
-package com.hfad.androidmaterialdesign.ui
+package com.hfad.androidmaterialdesign.ui.rest
 
 import com.google.gson.annotations.SerializedName
 

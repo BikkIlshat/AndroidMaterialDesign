@@ -1,4 +1,4 @@
-package com.hfad.androidmaterialdesign.ui
+package com.hfad.androidmaterialdesign.ui.details
 
 import android.content.Intent
 import android.net.Uri
@@ -14,9 +14,10 @@ import androidx.lifecycle.Observer
 import coil.api.load
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.hfad.androidmaterialdesign.MainActivity
+import com.hfad.androidmaterialdesign.ui.MainActivity
 import com.hfad.androidmaterialdesign.R
 import com.hfad.androidmaterialdesign.databinding.MainFragmentBinding
+import com.hfad.androidmaterialdesign.ui.settings.SettingsFragment
 
 
 class PictureOfTheDayFragment : Fragment() {
@@ -116,12 +117,19 @@ class PictureOfTheDayFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.app_bar_fav -> toast(getString(R.string.favourite))
-            R.id.app_bar_settings -> toast(getString(R.string.settings))
+            R.id.app_bar_settings -> activity?.apply {
+                this.supportFragmentManager
+                    .beginTransaction()
+                    .add(R.id.container,SettingsFragment())
+                    .addToBackStack(null)
+                    .commitAllowingStateLoss()
+            }
             android.R.id.home -> {
                 activity?.let {
                     BottomNavigationDrawerFragment().show(it.supportFragmentManager, "tag")
                 }
             }
+            R.id.app_bar_search ->toast(getString(R.string.search))
         }
         return super.onOptionsItemSelected(item)
     }

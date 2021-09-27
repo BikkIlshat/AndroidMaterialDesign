@@ -1,4 +1,5 @@
-package com.hfad.androidmaterialdesign.ui
+package com.hfad.androidmaterialdesign.ui.rest
+
 
 
 import retrofit2.Call

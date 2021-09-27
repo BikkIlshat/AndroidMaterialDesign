@@ -1,4 +1,4 @@
-package com.hfad.androidmaterialdesign.ui
+package com.hfad.androidmaterialdesign.ui.details
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,6 +7,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import com.hfad.androidmaterialdesign.BuildConfig
+import com.hfad.androidmaterialdesign.ui.rest.PODRetrofitImpl
+import com.hfad.androidmaterialdesign.ui.rest.PODServerResponseData
 
 
 class PictureOfTheDayViewModel(
