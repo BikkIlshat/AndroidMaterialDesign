@@ -2,6 +2,7 @@ package com.hfad.androidmaterialdesign.ui.rest
 
 
 
+import com.hfad.androidmaterialdesign.ui.rest.rest_entities.PODServerResponseData
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
