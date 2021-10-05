@@ -15,8 +15,12 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.hfad.androidmaterialdesign.ui.MainActivity
 import com.hfad.androidmaterialdesign.R
 import com.hfad.androidmaterialdesign.databinding.MainFragmentBinding
+import com.hfad.androidmaterialdesign.ui.collapsing_toolbar.CollapsingToolbarActivity
 import com.hfad.androidmaterialdesign.ui.details.view_pager.ViewPagerAdapter
 import com.hfad.androidmaterialdesign.ui.settings.SettingsFragment
+
+const val BOTTOM_SHEET_HEADER = "BottomSheetHeader"
+const val BOTTOM_SHEET_CONTENT = "BottomSheetContent"
 
 class PictureOfTheDayFragment : Fragment() {
 
@@ -114,8 +118,11 @@ class PictureOfTheDayFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val intent = Intent(context, CollapsingToolbarActivity::class.java)
+        intent.putExtra(BOTTOM_SHEET_HEADER, bottomSheetHeader.text)
+        intent.putExtra(BOTTOM_SHEET_CONTENT, bottomSheetContent.text)
         when (item.itemId) {
-            R.id.app_bar_fav -> toast(getString(R.string.favourite))
+            R.id.app_bar_fav -> startActivity(intent)
             R.id.app_bar_settings -> activity?.apply {
                 this.supportFragmentManager
                     .beginTransaction()
