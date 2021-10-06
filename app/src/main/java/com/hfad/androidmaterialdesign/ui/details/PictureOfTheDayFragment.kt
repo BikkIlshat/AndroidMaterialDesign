@@ -15,6 +15,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.hfad.androidmaterialdesign.ui.MainActivity
 import com.hfad.androidmaterialdesign.R
 import com.hfad.androidmaterialdesign.databinding.MainFragmentBinding
+import com.hfad.androidmaterialdesign.databinding.MainFragmentStartBinding
 import com.hfad.androidmaterialdesign.ui.collapsing_toolbar.CollapsingToolbarActivity
 import com.hfad.androidmaterialdesign.ui.details.view_pager.ViewPagerAdapter
 import com.hfad.androidmaterialdesign.ui.settings.SettingsFragment
@@ -24,7 +25,7 @@ const val BOTTOM_SHEET_CONTENT = "BottomSheetContent"
 
 class PictureOfTheDayFragment : Fragment() {
 
-    private var _binding: MainFragmentBinding? = null
+    private var _binding: MainFragmentStartBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: PictureOfTheDayViewModel by lazy {
@@ -40,7 +41,7 @@ class PictureOfTheDayFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = MainFragmentBinding.inflate(inflater, container, false)
+        _binding = MainFragmentStartBinding.inflate(inflater, container, false)
         return binding.root
     }
 
