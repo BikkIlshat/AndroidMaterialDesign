@@ -1,4 +1,4 @@
-package com.hfad.androidmaterialdesign.ui.rest
+package com.hfad.androidmaterialdesign.ui.rest.rest_entities
 
 
 

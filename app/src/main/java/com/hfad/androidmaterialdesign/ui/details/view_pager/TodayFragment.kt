@@ -5,9 +5,13 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnticipateOvershootInterpolator
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.transition.ChangeBounds
+import androidx.transition.TransitionManager
 import coil.api.load
 import com.hfad.androidmaterialdesign.R
 import com.hfad.androidmaterialdesign.databinding.TodayFragmentStartBinding
@@ -22,6 +26,8 @@ class TodayFragment : Fragment() {
     private val viewModel: PictureOfTheDayViewModel by lazy {
         ViewModelProvider(this).get(PictureOfTheDayViewModel::class.java)
     }
+
+    private var shown = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,6 +44,42 @@ class TodayFragment : Fragment() {
         viewModel.getData(null).observe(viewLifecycleOwner, {
             renderData(it)
         })
+        binding.todayImageView.setOnClickListener {
+            if (shown) {
+                hideInfo()
+            } else {
+                showInfo()
+            }
+        }
+    }
+
+
+    private fun showInfo() {
+        shown = true
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(context, R.layout.today_fragment_end)
+        val transition = ChangeBounds()
+        transition.interpolator = AnticipateOvershootInterpolator(5.0f)
+        transition.duration = 1000
+        TransitionManager.beginDelayedTransition(
+            binding.todayFragmentStartContainer,
+            transition
+        )
+        constraintSet.applyTo(binding.todayFragmentStartContainer)
+    }
+
+    private fun hideInfo() {
+        shown = false
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(context, R.layout.today_fragment_start)
+        val transition = ChangeBounds()
+        transition.interpolator = AnticipateOvershootInterpolator(5.0f)
+        transition.duration = 1000
+        TransitionManager.beginDelayedTransition(
+            binding.todayFragmentStartContainer,
+            transition
+        )
+        constraintSet.applyTo(binding.todayFragmentStartContainer)
     }
 
 
@@ -54,6 +96,7 @@ class TodayFragment : Fragment() {
                         error(R.drawable.ic_load_error_vector)
                         placeholder(R.drawable.ic_no_photo_vector)
                     }
+                    todayTitle.text = serverResponseData.title
                 }
             }
             is PictureOfTheDayData.Loading -> {
