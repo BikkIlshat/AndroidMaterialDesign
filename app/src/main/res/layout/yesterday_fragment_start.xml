@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <com.hfad.androidmaterialdesign.util.EquilateralImageView
-        android:id="@+id/before_yesterday_image_view"
+        android:id="@+id/yesterday_image_view"
         style="@style/equilateral_image_view_style"
         android:layout_width="match_parent"
         android:layout_height="@dimen/image_view_layout_height"
@@ -14,5 +14,4 @@
         app:layout_constraintEnd_toEndOf="@id/main"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_no_photo_vector" />
-
 </FrameLayout>

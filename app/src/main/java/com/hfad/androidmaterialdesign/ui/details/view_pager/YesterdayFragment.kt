@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import coil.api.load
 import com.hfad.androidmaterialdesign.R
-import com.hfad.androidmaterialdesign.databinding.YesterdayFragmentBinding
+import com.hfad.androidmaterialdesign.databinding.YesterdayFragmentStartBinding
 import com.hfad.androidmaterialdesign.ui.details.PictureOfTheDayData
 import com.hfad.androidmaterialdesign.ui.details.PictureOfTheDayViewModel
 import java.text.SimpleDateFormat
@@ -18,7 +18,7 @@ import java.util.*
 
 class YesterdayFragment : Fragment() {
 
-    private var _binding: YesterdayFragmentBinding? = null
+    private var _binding: YesterdayFragmentStartBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: PictureOfTheDayViewModel by lazy {
@@ -30,7 +30,7 @@ class YesterdayFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = YesterdayFragmentBinding.inflate(inflater, container, false)
+        _binding = YesterdayFragmentStartBinding.inflate(inflater, container, false)
         return binding.root
     }
 

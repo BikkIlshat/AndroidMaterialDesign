@@ -1,10 +1,8 @@
 package com.hfad.androidmaterialdesign.ui.details.view_pager
 
-import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.hfad.androidmaterialdesign.R
 
 
 private const val TODAY = 0
@@ -16,7 +14,7 @@ class ViewPagerAdapter(fm: FragmentManager) :
 
 
 
-    private val fragmentList = arrayOf(TodayFragment(), YesterdayFragment(), DayBeforeYesterday()
+    private val fragmentList = arrayOf(TodayFragment(), YesterdayFragment(), BeforeYesterdayFragment()
     )
 
 
