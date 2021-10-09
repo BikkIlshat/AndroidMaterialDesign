@@ -1,11 +1,15 @@
 package com.hfad.androidmaterialdesign.ui.details.view_pager
 
 import android.os.Bundle
+import android.transition.ChangeBounds
+import android.transition.TransitionManager
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnticipateOvershootInterpolator
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import coil.api.load
@@ -25,6 +29,8 @@ class YesterdayFragment : Fragment() {
         ViewModelProvider(this).get(PictureOfTheDayViewModel::class.java)
     }
 
+    private var shown = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,8 +46,42 @@ class YesterdayFragment : Fragment() {
         viewModel.getData(yesterdayDate()).observe(viewLifecycleOwner, {
             renderData(it)
         })
+        binding.yesterdayImageView.setOnClickListener {
+            if (shown) {
+                hideInfo()
+            } else {
+                showInfo()
+            }
+        }
     }
 
+    private fun showInfo() {
+        shown = true
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(context, R.layout.yesterday_fragment_end)
+        val transition = androidx.transition.ChangeBounds()
+        transition.interpolator = AnticipateOvershootInterpolator(5.0f)
+        transition.duration = 1000
+        androidx.transition.TransitionManager.beginDelayedTransition(
+            binding.yesterdayFragmentStartContainer,
+            transition
+        )
+        constraintSet.applyTo(binding.yesterdayFragmentStartContainer)
+    }
+
+    private fun hideInfo() {
+        shown = false
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(context, R.layout.yesterday_fragment_start)
+        val transition = androidx.transition.ChangeBounds()
+        transition.interpolator = AnticipateOvershootInterpolator(5.0f)
+        transition.duration = 1000
+        androidx.transition.TransitionManager.beginDelayedTransition(
+            binding.yesterdayFragmentStartContainer,
+            transition
+        )
+        constraintSet.applyTo(binding.yesterdayFragmentStartContainer)
+    }
 
     private fun yesterdayDate(): String {
         val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -63,7 +103,9 @@ class YesterdayFragment : Fragment() {
                         error(R.drawable.ic_load_error_vector)
                         placeholder(R.drawable.ic_no_photo_vector)
                     }
+                    yesterdayTitle.text = serverResponseData.title
                 }
+
             }
             is PictureOfTheDayData.Loading -> {
             }
