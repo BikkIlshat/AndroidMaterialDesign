@@ -1,5 +1,6 @@
 package com.hfad.androidmaterialdesign.ui.details
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.navigation.NavigationView
 import com.hfad.androidmaterialdesign.R
+import com.hfad.androidmaterialdesign.ui.recycler_activity.RecyclerActivity
 
 
 class BottomNavigationDrawerFragment : BottomSheetDialogFragment() {
@@ -35,6 +37,14 @@ class BottomNavigationDrawerFragment : BottomSheetDialogFragment() {
                     context, R.string.screen_2,
                     Toast.LENGTH_SHORT
                 ).show()
+                R.id.navigation_three -> activity?.let {
+                    startActivity(
+                        Intent(
+                            it,
+                            RecyclerActivity::class.java
+                        )
+                    )
+                }
             }
             true
         }
