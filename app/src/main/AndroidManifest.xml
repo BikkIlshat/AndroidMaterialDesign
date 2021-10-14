@@ -24,6 +24,10 @@
 
         <activity android:name="com.hfad.androidmaterialdesign.ui.collapsing_toolbar.CollapsingToolbarActivity" />
         <activity android:name=".ui.recycler_activity.RecyclerActivity"/>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
