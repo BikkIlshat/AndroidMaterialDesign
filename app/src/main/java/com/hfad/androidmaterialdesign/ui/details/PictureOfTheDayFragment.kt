@@ -1,13 +1,19 @@
 package com.hfad.androidmaterialdesign.ui.details
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.net.Uri
+import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.text.Layout
+import android.text.SpannableString
+import android.text.style.*
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomappbar.BottomAppBar
@@ -45,6 +51,7 @@ class PictureOfTheDayFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getData(null).observe(viewLifecycleOwner, {
@@ -65,7 +72,7 @@ class PictureOfTheDayFragment : Fragment() {
         setBottomAppBar(view)
     }
 
-
+    @RequiresApi(Build.VERSION_CODES.P)
     private fun renderData(data: PictureOfTheDayData) = with(binding) {
         when (data) {
             is PictureOfTheDayData.Success -> {
@@ -76,10 +83,15 @@ class PictureOfTheDayFragment : Fragment() {
                 if (url.isNullOrEmpty()) {
                     toast("Url is empty")
                 } else {
-                    bottomSheetHeader.text = serverResponseData.title
-                    bottomSheetContent.text = serverResponseData.explanation
+                    if (serverResponseData.title != null && serverResponseData.explanation != null) {
+                        setBottomSheetTextSpanned(
+                            serverResponseData.title,
+                            serverResponseData.explanation
+                        )
+                    }
                 }
             }
+
             is PictureOfTheDayData.Loading -> {
                 main.visibility = View.GONE
                 loadingLayout.visibility = View.VISIBLE
@@ -92,6 +104,59 @@ class PictureOfTheDayFragment : Fragment() {
         }
     }
 
+
+    @RequiresApi(Build.VERSION_CODES.P)
+    private fun setBottomSheetTextSpanned(title: String, explanation: String) {
+        val spannableTitle = SpannableString(title)
+        spannableTitle.setSpan(
+            BackgroundColorSpan(resources.getColor(R.color.lime_green)),
+            0, spannableTitle.length,
+            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        spannableTitle.setSpan(
+            ForegroundColorSpan(resources.getColor(R.color.dark_slate_blue)),
+            0, spannableTitle.length,
+            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        spannableTitle.setSpan(
+            StyleSpan(Typeface.BOLD_ITALIC),
+            0, spannableTitle.length,
+            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        spannableTitle.setSpan(
+            UnderlineSpan(),
+            0, spannableTitle.length,
+            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        spannableTitle.setSpan(
+            RelativeSizeSpan(1.5f),
+            0, spannableTitle.length,
+            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        bottomSheetHeader.text = spannableTitle
+
+        val spannableContent = SpannableString(explanation)
+        spannableContent.setSpan(
+            AlignmentSpan.Standard(Layout.Alignment.ALIGN_CENTER),
+            0, spannableContent.length,
+            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        spannableContent.setSpan(
+            RelativeSizeSpan(1.2f),
+            0, spannableContent.length,
+            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        bottomSheetContent.text = spannableContent
+    }
+
+    @RequiresApi(Build.VERSION_CODES.P)
     private fun setBottomSheetBehaviour(bottomSheet: ConstraintLayout) {
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
