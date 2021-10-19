@@ -1,7 +1,8 @@
-package com.hfad.androidmaterialdesign.ui
+package com.hfad.androidmaterialdesign.ui.rest
 
 
 import com.google.gson.GsonBuilder
+import com.hfad.androidmaterialdesign.ui.rest.rest_entities.PictureOfTheDayAPI
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

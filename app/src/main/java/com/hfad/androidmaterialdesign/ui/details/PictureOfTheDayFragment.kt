@@ -1,27 +1,37 @@
-package com.hfad.androidmaterialdesign.ui
+package com.hfad.androidmaterialdesign.ui.details
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.net.Uri
+import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.text.Layout
+import android.text.SpannableString
+import android.text.style.*
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
-import coil.api.load
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.hfad.androidmaterialdesign.MainActivity
+import com.hfad.androidmaterialdesign.ui.MainActivity
 import com.hfad.androidmaterialdesign.R
 import com.hfad.androidmaterialdesign.databinding.MainFragmentBinding
+import com.hfad.androidmaterialdesign.databinding.MainFragmentStartBinding
+import com.hfad.androidmaterialdesign.ui.collapsing_toolbar.CollapsingToolbarActivity
+import com.hfad.androidmaterialdesign.ui.details.view_pager.ViewPagerAdapter
+import com.hfad.androidmaterialdesign.ui.settings.SettingsFragment
 
+const val BOTTOM_SHEET_HEADER = "BottomSheetHeader"
+const val BOTTOM_SHEET_CONTENT = "BottomSheetContent"
 
 class PictureOfTheDayFragment : Fragment() {
 
-    private var _binding: MainFragmentBinding? = null
+    private var _binding: MainFragmentStartBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: PictureOfTheDayViewModel by lazy {
@@ -37,27 +47,33 @@ class PictureOfTheDayFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = MainFragmentBinding.inflate(inflater, container, false)
+        _binding = MainFragmentStartBinding.inflate(inflater, container, false)
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getData().observe(viewLifecycleOwner, Observer { renderData(it) })
+        viewModel.getData(null).observe(viewLifecycleOwner, {
+            renderData(it)
+        })
         binding.inputLayout.setEndIconOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("https://en.wikipedia.org/wiki/${binding.inputEditText.text.toString()}")
+                data = Uri.parse(
+                    "https://en.wikipedia.org/wiki/${binding.inputEditText.text.toString()}"
+                )
             })
         }
+        binding.viewPager.adapter = ViewPagerAdapter(childFragmentManager)
+        binding.tabLayout.setupWithViewPager(binding.viewPager)
         setBottomSheetBehaviour(view.findViewById(R.id.bottom_sheet_container))
         bottomSheetHeader = view.findViewById(R.id.bottom_sheet_description_header)
         bottomSheetContent = view.findViewById(R.id.bottom_sheet_description)
         setBottomAppBar(view)
     }
 
-
-
-    private fun renderData(data: PictureOfTheDayData) = with (binding) {
+    @RequiresApi(Build.VERSION_CODES.P)
+    private fun renderData(data: PictureOfTheDayData) = with(binding) {
         when (data) {
             is PictureOfTheDayData.Success -> {
                 main.visibility = View.VISIBLE
@@ -67,15 +83,15 @@ class PictureOfTheDayFragment : Fragment() {
                 if (url.isNullOrEmpty()) {
                     toast("Url is empty")
                 } else {
-                    binding.imageView.load(url) {
-                        lifecycle(this@PictureOfTheDayFragment)
-                        error(R.drawable.ic_load_error_vector)
-                        placeholder(R.drawable.ic_no_photo_vector)
+                    if (serverResponseData.title != null && serverResponseData.explanation != null) {
+                        setBottomSheetTextSpanned(
+                            serverResponseData.title,
+                            serverResponseData.explanation
+                        )
                     }
-                    bottomSheetHeader.text = serverResponseData.title
-                    bottomSheetContent.text = serverResponseData.explanation
                 }
             }
+
             is PictureOfTheDayData.Loading -> {
                 main.visibility = View.GONE
                 loadingLayout.visibility = View.VISIBLE
@@ -88,6 +104,59 @@ class PictureOfTheDayFragment : Fragment() {
         }
     }
 
+
+    @RequiresApi(Build.VERSION_CODES.P)
+    private fun setBottomSheetTextSpanned(title: String, explanation: String) {
+        val spannableTitle = SpannableString(title)
+        spannableTitle.setSpan(
+            BackgroundColorSpan(resources.getColor(R.color.lime_green)),
+            0, spannableTitle.length,
+            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        spannableTitle.setSpan(
+            ForegroundColorSpan(resources.getColor(R.color.dark_slate_blue)),
+            0, spannableTitle.length,
+            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        spannableTitle.setSpan(
+            StyleSpan(Typeface.BOLD_ITALIC),
+            0, spannableTitle.length,
+            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        spannableTitle.setSpan(
+            UnderlineSpan(),
+            0, spannableTitle.length,
+            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        spannableTitle.setSpan(
+            RelativeSizeSpan(1.5f),
+            0, spannableTitle.length,
+            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        bottomSheetHeader.text = spannableTitle
+
+        val spannableContent = SpannableString(explanation)
+        spannableContent.setSpan(
+            AlignmentSpan.Standard(Layout.Alignment.ALIGN_CENTER),
+            0, spannableContent.length,
+            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        spannableContent.setSpan(
+            RelativeSizeSpan(1.2f),
+            0, spannableContent.length,
+            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        bottomSheetContent.text = spannableContent
+    }
+
+    @RequiresApi(Build.VERSION_CODES.P)
     private fun setBottomSheetBehaviour(bottomSheet: ConstraintLayout) {
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -103,6 +172,7 @@ class PictureOfTheDayFragment : Fragment() {
                     BottomSheetBehavior.STATE_SETTLING -> toast("STATE_SETTLING")
                 }
             }
+
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
             }
         })
@@ -114,19 +184,29 @@ class PictureOfTheDayFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val intent = Intent(context, CollapsingToolbarActivity::class.java)
+        intent.putExtra(BOTTOM_SHEET_HEADER, bottomSheetHeader.text)
+        intent.putExtra(BOTTOM_SHEET_CONTENT, bottomSheetContent.text)
         when (item.itemId) {
-            R.id.app_bar_fav -> toast(getString(R.string.favourite))
-            R.id.app_bar_settings -> toast(getString(R.string.settings))
+            R.id.app_bar_fav -> startActivity(intent)
+            R.id.app_bar_settings -> activity?.apply {
+                this.supportFragmentManager
+                    .beginTransaction()
+                    .add(R.id.container, SettingsFragment())
+                    .addToBackStack(null)
+                    .commitAllowingStateLoss()
+            }
             android.R.id.home -> {
                 activity?.let {
                     BottomNavigationDrawerFragment().show(it.supportFragmentManager, "tag")
                 }
             }
+            R.id.app_bar_search -> toast(getString(R.string.search))
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun setBottomAppBar(view: View) = with (binding) {
+    private fun setBottomAppBar(view: View) = with(binding) {
         val context = activity as MainActivity
         context.setSupportActionBar(view.findViewById(R.id.bottom_app_bar))
         setHasOptionsMenu(true)
@@ -140,7 +220,8 @@ class PictureOfTheDayFragment : Fragment() {
             } else {
                 isMain = true
                 bottomAppBar.navigationIcon = ContextCompat.getDrawable(
-                    context, R.drawable.ic_hamburger_menu_bottom_bar
+                    context,
+                    R.drawable.ic_hamburger_menu_bottom_bar
                 )
                 bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
                 fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_plus_fab))
